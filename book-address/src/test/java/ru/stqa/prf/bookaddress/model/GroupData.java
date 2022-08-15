@@ -1,4 +1,4 @@
-package ru.stqa.prf.bookaddress;
+package ru.stqa.prf.bookaddress.model;
 
 public class GroupData {
     private final String name;
