@@ -27,7 +27,7 @@ public class ApplicationManager {
         } else if (browser.equals("chrome")) {
           WebDriverManager.chromedriver().setup();
           wb = new ChromeDriver();
-        }else if (browser.equals("edge")) {
+        } else if (browser.equals("edge")) {
             WebDriverManager.edgedriver().setup();
             wb = new EdgeDriver();
         }
