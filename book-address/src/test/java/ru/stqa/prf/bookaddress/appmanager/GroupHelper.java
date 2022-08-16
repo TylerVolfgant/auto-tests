@@ -36,4 +36,12 @@ public class GroupHelper extends HelperBase{
     public void initGroupCreation() {
         Click(By.name("new"));
     }
+
+    public void initGroupModification() {
+        Click(By.name("edit"));
+    }
+
+    public void submitGroupModificaion() {
+        Click(By.name("update"));
+    }
 }
