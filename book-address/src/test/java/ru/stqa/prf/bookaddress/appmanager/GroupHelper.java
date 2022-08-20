@@ -6,16 +6,16 @@ import ru.stqa.prf.bookaddress.model.GroupData;
 
 public class GroupHelper extends HelperBase{
 
-    public GroupHelper(WebDriver wb) {
-        super(wb);
+    public GroupHelper(WebDriver wd) {
+        super(wd);
     }
 
     public void deleteSelectedGroups() {
         Click(By.name("delete"));
     }
 
-    public void selectGroup() {
-        Click(By.name("selected[]"));
+    public void selectGroup(int index) {
+        wd.findElements(By.name("selected[]")).get(index).click();
     }
 
     public void returnToGroupPage() {
@@ -57,6 +57,6 @@ public class GroupHelper extends HelperBase{
     }
 
     public int getGroupCount() {
-        return wb.findElements(By.name("selected[]")).size();
+        return wd.findElements(By.name("selected[]")).size();
     }
 }

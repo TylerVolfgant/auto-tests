@@ -19,7 +19,7 @@ public class ContactHelper extends HelperBase{
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("lastname"), contactData.getLastname());
         if(creation){
-            new Select(wb.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
         } else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -55,7 +55,7 @@ public class ContactHelper extends HelperBase{
 
     public int getContatCount() {
         //return wb.findElements(By.id("search_count")).size(); #search_count #content > label:nth-child(6) /html/body/div/div[4]/label
-        return wb.findElements(By.name("selected[]")).size();
+        return wd.findElements(By.name("selected[]")).size();
        /// return wb.findElement(By.cssSelector("search_count")).getAttribute("id");
     }
 }
