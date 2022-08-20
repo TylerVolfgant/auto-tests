@@ -2,10 +2,10 @@ package ru.stqa.prf.bookaddress.appmanager;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.prf.bookaddress.model.ContactData;
+
 
 public class ContactHelper extends HelperBase{
     public ContactHelper(WebDriver wb){
@@ -36,5 +36,20 @@ public class ContactHelper extends HelperBase{
     }
     public void initContactModification(){
         Click(By.cssSelector("img[alt='Edit']"));
+    }
+
+    public boolean isThereAContact() {
+        //*[@id="search_count"]
+        return isElementPresent(By.cssSelector("img[alt='Edit']"));
+    }
+
+    public void deleteSelectedContact() {
+        Click(By.xpath("//input[@value='Delete']"));
+    }
+    public void createContact(ContactData contact, boolean creation) {
+        initContactCreation();
+        fillContactForm(contact, true);
+        submitContactCreation();
+        returnToHomePage();
     }
 }
