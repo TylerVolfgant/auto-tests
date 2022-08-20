@@ -6,6 +6,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.concurrent.TimeUnit;
+
 public class ApplicationManager {
     private final String browser;
     private NavigationHelper navigationHelper;
@@ -32,6 +34,7 @@ public class ApplicationManager {
             WebDriverManager.edgedriver().setup();
             wb = new EdgeDriver();
         }
+        wb.manage().timeouts().implicitlyWait(30, TimeUnit.MILLISECONDS);
         wb.get("http://localhost:8080/addressbook/");
         groupHelper = new GroupHelper(wb);
         navigationHelper = new NavigationHelper(wb);

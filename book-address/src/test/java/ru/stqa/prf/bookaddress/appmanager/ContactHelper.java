@@ -52,4 +52,10 @@ public class ContactHelper extends HelperBase{
         submitContactCreation();
         returnToHomePage();
     }
+
+    public int getContatCount() {
+        //return wb.findElements(By.id("search_count")).size(); #search_count #content > label:nth-child(6) /html/body/div/div[4]/label
+        return wb.findElements(By.name("selected[]")).size();
+       /// return wb.findElement(By.cssSelector("search_count")).getAttribute("id");
+    }
 }
