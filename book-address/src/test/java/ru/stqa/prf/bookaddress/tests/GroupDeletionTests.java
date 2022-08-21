@@ -4,20 +4,26 @@ import org.testng.annotations.*;
 import ru.stqa.prf.bookaddress.appmanager.GroupHelper;
 import ru.stqa.prf.bookaddress.model.GroupData;
 
-public class GroupDeletionTests extends TestBase {
+import java.util.List;
 
+public class GroupDeletionTests extends TestBase {
+  @BeforeMethod
+  public void ensurePreconditions(){
+    app.getNavigationHelper().gotoGroupPage();;
+    if (!app.getGroupHelper().isThereAGroup()){
+      app.getGroupHelper().createGroup(new GroupData("test1", null, null));
+    }
+  }
   @Test
   public void testGroupDeletion() throws Exception {
-    app.getNavigationHelper().gotoGroupPage();
-    int before = app.getGroupHelper().getGroupCount();
-    if (!app.getGroupHelper().isThereAGroup()){
-      app.getGroupHelper().createGroup(new GroupData("test", null, null));
-    }
-    app.getGroupHelper().selectGroup(before -1);
+    List<GroupData> before = app.getGroupHelper().getGroupList();
+    app.getGroupHelper().selectGroup(before.size() -1);
     app.getGroupHelper().deleteSelectedGroups();
     app.getGroupHelper().returnToGroupPage();
-    int after = app.getGroupHelper().getGroupCount();
-    Assert.assertEquals(after, before - 1);
+    List<GroupData> after = app.getGroupHelper().getGroupList();
+    Assert.assertEquals(after.size(), before.size() - 1);
+    //before.remove(before.size() - 1);
+    //Assert.assertEquals(before, after);
     //wb.findElement(By.linkText("Logout")).click();
   }
 
