@@ -1,17 +1,15 @@
 package ru.stqa.prf.bookaddress.tests;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.prf.bookaddress.model.ContactData;
-import ru.stqa.prf.bookaddress.tests.TestBase;
 
 public class ContactModificationTests extends TestBase {
 
     @Test
 
     public void testContactModification(){
-        app.getNavigationHelper().gotoHomePage();
+        app.goTo().gotoHomePage();
         if (!app.getContactHelper().isThereAContact()){
             app.getContactHelper().createContact(new ContactData("test_name","test_surname", "test"),true);
         }

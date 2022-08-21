@@ -1,31 +1,30 @@
 package ru.stqa.prf.bookaddress.tests;
 import org.testng.Assert;
 import org.testng.annotations.*;
-import ru.stqa.prf.bookaddress.appmanager.GroupHelper;
 import ru.stqa.prf.bookaddress.model.GroupData;
-
-import java.util.List;
+import java.util.Set;
 
 public class GroupDeletionTests extends TestBase {
   @BeforeMethod
   public void ensurePreconditions(){
-    app.getNavigationHelper().gotoGroupPage();;
-    if (!app.getGroupHelper().isThereAGroup()){
-      app.getGroupHelper().createGroup(new GroupData("test1", null, null));
+    app.goTo().gotoGroupPage();;
+    if (app.Group().All().size() == 0){
+      app.Group().create(new GroupData().withName("test1"));
     }
   }
   @Test
   public void testGroupDeletion() throws Exception {
-    List<GroupData> before = app.getGroupHelper().getGroupList();
-    app.getGroupHelper().selectGroup(before.size() -1);
-    app.getGroupHelper().deleteSelectedGroups();
-    app.getGroupHelper().returnToGroupPage();
-    List<GroupData> after = app.getGroupHelper().getGroupList();
+    Set<GroupData> before = app.Group().All();
+    GroupData deletedGroup = before.iterator().next();
+    app.Group().deletion(deletedGroup);
+    Set<GroupData> after = app.Group().All();
     Assert.assertEquals(after.size(), before.size() - 1);
-    //before.remove(before.size() - 1);
-    //Assert.assertEquals(before, after);
+    before.remove(deletedGroup);
+    Assert.assertEquals(before, after);
     //wb.findElement(By.linkText("Logout")).click();
   }
+
+
 
 
 }
