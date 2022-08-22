@@ -4,6 +4,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import ru.stqa.prf.bookaddress.model.GroupData;
+import ru.stqa.prf.bookaddress.model.Groups;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -62,8 +64,8 @@ public class GroupHelper extends HelperBase{
         return wd.findElements(By.name("selected[]")).size();
     }
 
-    public Set<GroupData> All() {
-        Set<GroupData> groups = new HashSet<GroupData>();
+    public Groups All() {
+        Groups groups = new Groups();
         List<WebElement> elements = wd.findElements(By.name("selected[]"));
         for (WebElement element : elements){
             String new_name = null;
@@ -73,8 +75,10 @@ public class GroupHelper extends HelperBase{
             if (matcher.find())
             {
                 new_name = matcher.group(1);
+                //System.out.println(new_name);
             }
             int id = Integer.parseInt(element.getAttribute("value"));
+            //System.out.println(id);
             groups.add(new GroupData().withId(id).withName(new_name));
         }
         return groups;

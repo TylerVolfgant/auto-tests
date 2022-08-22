@@ -1,8 +1,15 @@
 package ru.stqa.prf.bookaddress.tests;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import ru.stqa.prf.bookaddress.model.GroupData;
+import ru.stqa.prf.bookaddress.model.Groups;
+
 import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 
 public class GroupDeletionTests extends TestBase {
   @BeforeMethod
@@ -14,13 +21,13 @@ public class GroupDeletionTests extends TestBase {
   }
   @Test
   public void testGroupDeletion() throws Exception {
-    Set<GroupData> before = app.Group().All();
+    Groups before = app.Group().All();
     GroupData deletedGroup = before.iterator().next();
     app.Group().deletion(deletedGroup);
-    Set<GroupData> after = app.Group().All();
+    Groups after = app.Group().All();
     Assert.assertEquals(after.size(), before.size() - 1);
-    before.remove(deletedGroup);
-    Assert.assertEquals(before, after);
+
+    assertThat(after, equalTo(before.without(deletedGroup)));
     //wb.findElement(By.linkText("Logout")).click();
   }
 
