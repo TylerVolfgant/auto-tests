@@ -57,15 +57,19 @@ public class GroupHelper extends HelperBase{
         initGroupCreation();
         fillGroupForm(group);
         submitGroupCreation();
+        groupCache = null;
         returnToGroupPage();
     }
 
     public int getGroupCount() {
         return wd.findElements(By.name("selected[]")).size();
     }
-
+    private Groups groupCache = null;
     public Groups All() {
-        Groups groups = new Groups();
+        if (groupCache != null){
+            return new Groups(groupCache);
+        }
+        groupCache = new Groups();
         List<WebElement> elements = wd.findElements(By.name("selected[]"));
         for (WebElement element : elements){
             String new_name = null;
@@ -79,21 +83,23 @@ public class GroupHelper extends HelperBase{
             }
             int id = Integer.parseInt(element.getAttribute("value"));
             //System.out.println(id);
-            groups.add(new GroupData().withId(id).withName(new_name));
+            groupCache.add(new GroupData().withId(id).withName(new_name));
         }
-        return groups;
+        return new Groups(groupCache);
     }
     public void modify( GroupData group) {
         selectGroupById(group.getId());
         initGroupModification();
         fillGroupForm(group);
         submitGroupModificaion();
+        groupCache = null;
         returnToGroupPage();
     }
 
     public void deletion(GroupData group) {
         selectGroupById(group.getId());
         deleteSelectedGroups();
+        groupCache = null;
         returnToGroupPage();
     }
 
