@@ -1,11 +1,13 @@
 package ru.stqa.prf.bookaddress.appmanager;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 public class ApplicationManager {
@@ -43,16 +45,6 @@ public class ApplicationManager {
         sessionHelper.login("admin", "secret");
     }
 
-
-//    private boolean isElementPresent(By by) {
-//      try {
-//        wb.findElement(by);
-//        return true;
-//      } catch (NoSuchElementException e) {
-//        return false;
-//      }
-//    }
-
     public GroupHelper Group() {
         return groupHelper;
     }
@@ -61,7 +53,7 @@ public class ApplicationManager {
         return navigationHelper;
     }
 
-    public ContactHelper getContactHelper() {
+    public ContactHelper Contact() {
         return contactHelper;
     }
 }
