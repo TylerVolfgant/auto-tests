@@ -1,8 +1,10 @@
 package ru.stqa.prf.bookaddress.model;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
+
 import java.util.Objects;
-
+@XStreamAlias("group")
 public class GroupData {
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -11,12 +13,11 @@ public class GroupData {
         if(id != groupData.id) return false;
         return name != null ? name.equals(groupData.name) : groupData.name == null;
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
     }
-
+    @XStreamOmitField
     private int id = Integer.MAX_VALUE;
     private String name;
     private String header;
