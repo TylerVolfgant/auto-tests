@@ -1,5 +1,6 @@
 package ru.stqa.prf.bookaddress.model;
 
+import java.io.File;
 import java.util.Objects;
 
 public class ContactData {
@@ -11,6 +12,9 @@ public class ContactData {
     private String homePhone;
     private String mobilePhone;
     private String workPhone;
+
+
+    private File photo;
 
 //    public ContactData(String firstname, String lastname, String group) {
 //        this.firstname = firstname;
@@ -55,13 +59,21 @@ public class ContactData {
         return this;
     }
 
-
     public String getGroup() {
         return group;
     }
 
     public ContactData withGroup(String group){
         this.group = group;
+        return this;
+    }
+
+    public File getPhoto() {
+        return photo;
+    }
+
+    public ContactData withPhoto(File photo) {
+        this.photo = photo;
         return this;
     }
 

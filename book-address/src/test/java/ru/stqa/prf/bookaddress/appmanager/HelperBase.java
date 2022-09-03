@@ -6,6 +6,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import ru.stqa.prf.bookaddress.model.GroupData;
 
+import java.io.File;
+
 public class HelperBase {
     protected WebDriver wd;
 
@@ -27,6 +29,10 @@ public class HelperBase {
             }
         }
     }
+
+    protected void attach(By locator, File file) {
+                wd.findElement(locator).sendKeys(file.getAbsolutePath());
+            }
 
     public boolean isAlertPresent() {
         try {

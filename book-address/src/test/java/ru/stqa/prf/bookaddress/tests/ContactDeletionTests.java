@@ -11,7 +11,7 @@ public class ContactDeletionTests extends TestBase {
         //if (!app.Contact().isThereAContact()){
         if (app.Contact().All().size() == 0){
                 //app.Contact().createContact(new ContactData("test_name","test_surname", "test"),true);
-                app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withGroup("test"));
+                app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withGroup("test"),true);
             }
         //}
         int before = app.Contact().getContactCount();

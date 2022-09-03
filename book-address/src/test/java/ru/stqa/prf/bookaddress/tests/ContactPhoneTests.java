@@ -14,7 +14,7 @@ public class ContactPhoneTests extends TestBase{
         app.goTo().gotoHomePage();
         if (app.Contact().All().size() == 0){
             app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withGroup("test").withHomePhone("111")
-                    .withMobilePhone("222").withWorkPhone("+7 (333)"));
+                    .withMobilePhone("222").withWorkPhone("+7 (333)"),true);
         }
         ContactData contact = app.Contact().All().iterator().next();
         ContactData contactInfoFromEditForm = app.Contact().infoFromEditForm(contact);

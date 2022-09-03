@@ -13,26 +13,28 @@ import java.util.Set;
 
 
 public class ContactHelper extends HelperBase{
-    public ContactHelper(WebDriver wb){
-        super(wb);
+    public ContactHelper(WebDriver wd){
+        super(wd);
     }
     public void initContactCreation(){
         Click(By.linkText("add new"));
         Click(By.xpath("//input[@name='quickadd']"));
     }
-    public void fillContactForm(ContactData contactData){
     //public void fillContactForm(ContactData contactData){
+    public void fillContactForm(ContactData contactData, boolean creation){
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("lastname"), contactData.getLastname());
         type(By.name("home"), contactData.getHomePhone());
         type(By.name("work"), contactData.getWorkPhone());
         type(By.name("mobile"), contactData.getMobilePhone());
-       // type(By.name("new_group"), contactData.getGroup());
-//        if(creation){
-//            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-//        } else {
-//            Assert.assertFalse(isElementPresent(By.name("new_group")));
-//        }
+        attach(By.name("photo"), contactData.getPhoto());
+        if(creation){
+            if(contactData.getGroup() != null) {
+                new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+            }
+        } else {
+            Assert.assertFalse(isElementPresent(By.name("new_group")));
+        }
     }
 
     public void submitContactCreation(){
@@ -56,10 +58,11 @@ public class ContactHelper extends HelperBase{
     public void deleteSelectedContact() {
         Click(By.xpath("//input[@value='Delete']"));
     }
-    public void createContact(ContactData contact) {
     //public void createContact(ContactData contact) {
+    public void createContact(ContactData contact, boolean creation) {
         initContactCreation();
-        fillContactForm(contact);
+        //fillContactForm(contact);
+        fillContactForm(contact,true);
         submitContactCreation();
         returnToHomePage();
     }
