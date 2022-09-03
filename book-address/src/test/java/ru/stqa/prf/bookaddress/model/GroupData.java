@@ -1,4 +1,5 @@
 package ru.stqa.prf.bookaddress.model;
+import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
@@ -19,8 +20,11 @@ public class GroupData {
     }
     @XStreamOmitField
     private int id = Integer.MAX_VALUE;
+    @Expose
     private String name;
+    @Expose
     private String header;
+    @Expose
     private String footer;
 
 
