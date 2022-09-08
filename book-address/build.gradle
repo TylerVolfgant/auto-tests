@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    //testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation(
+            'io.github.bonigarcia:webdrivermanager:5.2.2',
+            'org.seleniumhq.selenium:selenium-java:4.3.0',
+            'org.testng:testng:6.9.10',
+            'org.hamcrest:hamcrest:2.2',
+            'com.beust:jcommander:1.82',
+            'com.thoughtworks.xstream:xstream:1.4.19',
+            'com.google.code.gson:gson:2.9.1'
+
+    )
+
+}
+
+test {
+
+    useTestNG() {
+        // report generation delegated to TestNG library:
+        useDefaultListeners = true
+    }
+    //we want display the following test events
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+}
