@@ -26,7 +26,6 @@ dependencies {
 }
 
 test {
-
     useTestNG() {
         // report generation delegated to TestNG library:
         useDefaultListeners = true
@@ -34,5 +33,29 @@ test {
     //we want display the following test events
     testLogging {
         events "PASSED", "FAILED", "SKIPPED"
+    }
+}
+
+task testGroups(type: Test){
+    useTestNG() {
+        suites 'src/test/resources/testngGroups.xml'
+    }
+    if(project.hasProperty('browser')){
+        systemProperty('browser',"${browser}")
+    }
+    if(project.hasProperty('target')){
+        systemProperty('target',"${target}")
+    }
+}
+
+task testContacts(type: Test){
+    useTestNG() {
+        suites 'src/test/resources/testngContacts.xml'
+    }
+    if(project.hasProperty('browser')){
+        systemProperty('browser',"${browser}")
+    }
+    if(project.hasProperty('target')){
+        systemProperty('target',"${target}")
     }
 }
