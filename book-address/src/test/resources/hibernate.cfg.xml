@@ -18,5 +18,6 @@
         <!--property name="format_sql">true</property-->
         <property name="hbm2ddl.auto">validate</property>
         <mapping class="ru.stqa.prf.bookaddress.model.GroupData"/>
+        <mapping class="ru.stqa.prf.bookaddress.model.ContactData"/>
     </session-factory>
 </hibernate-configuration>
