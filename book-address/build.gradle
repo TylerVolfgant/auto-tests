@@ -22,7 +22,8 @@ dependencies {
             'com.google.code.gson:gson:2.9.1',
             'mysql:mysql-connector-java:8.0.30',
             'org.mariadb.jdbc:mariadb-java-client:3.0.7',
-            'org.hibernate:hibernate-core:5.2.9.Final'
+            'org.hibernate:hibernate-core:5.2.9.Final',
+            'ch.qos.logback:logback-classic:1.1.5'
 
     )
 

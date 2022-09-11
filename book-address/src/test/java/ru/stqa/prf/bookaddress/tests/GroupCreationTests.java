@@ -64,6 +64,7 @@ public class GroupCreationTests extends TestBase {
 
     @Test(dataProvider = "validGroupsJson")
   public void testGroupCreation(GroupData group) {
+
     app.goTo().gotoGroupPage();
     Groups before = app.Group().All();
     //GroupData group = new GroupData().withName("test2");
