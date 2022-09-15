@@ -5,6 +5,7 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import ru.stqa.prf.bookaddress.model.GroupData;
+import org.openqa.selenium.support.ui.Select;
 
 import java.io.File;
 
@@ -29,10 +30,15 @@ public class HelperBase {
             }
         }
     }
+    protected void selectFromDropDown(String locator, String text) {
+        new Select(wd.findElement(By.name(locator))).selectByVisibleText(text);
+
+    }
 
     protected void attach(By locator, File file) {
                 wd.findElement(locator).sendKeys(file.getAbsolutePath());
             }
+
 
     public boolean isAlertPresent() {
         try {

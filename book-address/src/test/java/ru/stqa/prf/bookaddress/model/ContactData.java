@@ -96,22 +96,22 @@ public class ContactData {
         return new File(photo);
     }
 
-    public ContactData withPhoto(File photo) {
-        this.photo = photo.getPath();
-        return this;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContactData that = (ContactData) o;
-        return Objects.equals(firstname, that.firstname) && Objects.equals(lastname, that.lastname) && Objects.equals(group, that.group);
+        return id == that.id && Objects.equals(firstname, that.firstname) && Objects.equals(lastname, that.lastname) && Objects.equals(group, that.group) && Objects.equals(homePhone, that.homePhone) && Objects.equals(mobilePhone, that.mobilePhone) && Objects.equals(workPhone, that.workPhone) && Objects.equals(photo, that.photo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstname, lastname, group);
+        return Objects.hash(id, firstname, lastname, group, homePhone, mobilePhone, workPhone, photo);
+    }
+
+    public ContactData withPhoto(File photo) {
+        this.photo = photo.getPath();
+        return this;
     }
 
 }

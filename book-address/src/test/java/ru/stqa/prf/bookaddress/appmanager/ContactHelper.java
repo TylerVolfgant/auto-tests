@@ -6,13 +6,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.prf.bookaddress.model.ContactData;
+import ru.stqa.prf.bookaddress.model.Groups;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ContactHelper extends HelperBase{
+    private Groups groupCache = null;
     public ContactHelper(WebDriver wd){
         super(wd);
     }
@@ -20,19 +24,16 @@ public class ContactHelper extends HelperBase{
         Click(By.linkText("add new"));
         Click(By.xpath("//input[@name='quickadd']"));
     }
-    //public void fillContactForm(ContactData contactData){
-    public void fillContactForm(ContactData contactData, boolean creation){
+    public void fillContactForm(ContactData contactData){
         type(By.name("firstname"), contactData.getFirstname());
         type(By.name("lastname"), contactData.getLastname());
         type(By.name("home"), contactData.getHomePhone());
         type(By.name("work"), contactData.getWorkPhone());
         type(By.name("mobile"), contactData.getMobilePhone());
         attach(By.name("photo"), contactData.getPhoto());
-        if(creation){
-            if(contactData.getGroup() != null) {
-                new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
-            }
-        } else {
+        if(contactData.getGroup() != null) {
+            selectFromDropDown("new_group", contactData.getGroup());
+            }else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
     }
@@ -46,6 +47,10 @@ public class ContactHelper extends HelperBase{
     public void submitContactModification(){
         Click(By.name("update"));
     }
+
+    public void submitAddTo(){
+        Click(By.xpath("//input[@value='Add to']"));
+    }
     public void initContactModification(){
         Click(By.cssSelector("img[alt='Edit']"));
     }
@@ -55,16 +60,56 @@ public class ContactHelper extends HelperBase{
         return isElementPresent(By.cssSelector("img[alt='Edit']"));
     }
 
-    public void deleteSelectedContact() {
+    public void delete(){
         Click(By.xpath("//input[@value='Delete']"));
+        wd.switchTo().alert().accept();
     }
-    //public void createContact(ContactData contact) {
-    public void createContact(ContactData contact, boolean creation) {
+    public void deleteSelectedContact(ContactData contact) {
+        returnToHomePage();
+        selectContactById(contact.getId());
+        delete();
+        returnToHomePage();
+    }
+    public void createContact(ContactData contact) {
         initContactCreation();
-        //fillContactForm(contact);
-        fillContactForm(contact,true);
+        fillContactForm(contact);
         submitContactCreation();
         returnToHomePage();
+    }
+    public void modifyContact( ContactData contact) {
+        selectContactById(contact.getId());
+        initContactModification();
+        fillContactForm(contact);
+        submitContactModification();
+        returnToHomePage();
+    }
+    public void addContactToGroup( ContactData contact) {
+        returnToHomePage();
+        selectContactById(contact.getId());
+        dropRandomGroup();
+        submitAddTo();
+        returnToHomePage();
+    }
+
+        public String dropRandomGroup(){
+        Select s = new Select(wd.findElement(By.xpath("//select[@name='to_group']")));
+        // getting the list of options in the dropdown with getOptions()
+        List <WebElement> drops = s.getOptions();
+        int size = drops.size();
+        int randomNumber = ThreadLocalRandom.current().nextInt(0, size);
+        String option = drops.get(randomNumber).getText();
+        //System.out.println(option);
+        return option;
+    }
+    public String addRandomGroup(){
+        Select s = new Select(wd.findElement(By.xpath("//select[@name='new_group']")));
+        // getting the list of options in the dropdown with getOptions()
+        List <WebElement> drops = s.getOptions();
+        int size = drops.size();
+        int randomNumber = ThreadLocalRandom.current().nextInt(0, size);
+        String option = drops.get(randomNumber).getText();
+        //System.out.println(option);
+        return option;
     }
 
     public Set<ContactData> All(){
@@ -98,6 +143,7 @@ public class ContactHelper extends HelperBase{
         WebElement checkbox = wd.findElement(By.cssSelector(String.format("input[value='%s']", id)));
         WebElement row = checkbox.findElement(By.xpath("./../.."));
         List<WebElement> cells = row.findElements(By.tagName("td"));
+        //cleck to edit
         cells.get(7).findElement(By.tagName("a")).click();
        /// wd.findElement(By.xpath(String.format("//input[@value='%s']./../../td[8]a",id))).click();
     }
@@ -106,5 +152,8 @@ public class ContactHelper extends HelperBase{
         //return wb.findElements(By.id("search_count")).size(); #search_count #content > label:nth-child(6) /html/body/div/div[4]/label
         return wd.findElements(By.name("selected[]")).size();
        /// return wb.findElement(By.cssSelector("search_count")).getAttribute("id");
+    }
+    private void selectContactById(int id) {
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
 }

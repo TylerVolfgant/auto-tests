@@ -21,12 +21,11 @@ public class GroupDeletionTests extends TestBase {
   }
   @Test
   public void testGroupDeletion() throws Exception {
-    Groups before = app.Group().All();
+    Groups before = app.db().groups();
     GroupData deletedGroup = before.iterator().next();
     app.Group().deletion(deletedGroup);
-    Groups after = app.Group().All();
+    Groups after = app.db().groups();
     Assert.assertEquals(after.size(), before.size() - 1);
-
     assertThat(after, equalTo(before.without(deletedGroup)));
     //wb.findElement(By.linkText("Logout")).click();
   }

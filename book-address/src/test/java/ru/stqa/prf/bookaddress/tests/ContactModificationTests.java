@@ -3,30 +3,42 @@ package ru.stqa.prf.bookaddress.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.prf.bookaddress.model.ContactData;
+import ru.stqa.prf.bookaddress.model.Contacts;
+import ru.stqa.prf.bookaddress.model.GroupData;
+import ru.stqa.prf.bookaddress.model.Groups;
 
 import java.io.File;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 public class ContactModificationTests extends TestBase {
 
     @Test(enabled = true)
 
     public void testContactModification(){
+        String mod = "_mod";
+        int randNumb = ThreadLocalRandom.current().nextInt(0, 10);
         File photo = new File("src/test/resources/green-check.png");
-        app.goTo().gotoHomePage();
-        //if (!app.Contact().isThereAContact()){
-            if (app.Contact().All().size() == 0){
-            //app.Contact().createContact(new ContactData("test_name","test_surname", "test"),true);
-            app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withHomePhone("111").withWorkPhone("222").withMobilePhone("333"),true);
+
+        if (app.db().contacts().size() == 0){
+            app.goTo().gotoGroupPage();
+            app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withHomePhone("111").withGroup("test 1")
+                    .withMobilePhone("222").withWorkPhone("333").withPhoto(photo));//,true);
         }
-        int before = app.Contact().getContactCount();
-        app.Contact().initContactModification();
-        //app.Contact().fillContactForm(new ContactData("test_name_mod","test_surname_mod",null), false);
-        app.Contact().fillContactForm(new ContactData().withFirstname("test_name_mod").withLastname("test_surname_mod")
-                .withHomePhone("156").withWorkPhone("178").withMobilePhone("258").withPhoto(photo),false);
-        app.Contact().submitContactModification();
-        app.Contact().returnToHomePage();
-        int after = app.Contact().getContactCount();
-        Assert.assertEquals(after, before );
+        Contacts before = app.db().contacts();
+        app.goTo().gotoHomePage();
+        ContactData contact = before.iterator().next();
+        ContactData modcontact  = new ContactData().withId(contact.getId()).withFirstname("test_name" + mod).withLastname("test_lastname" + mod).withGroup(null)
+                .withHomePhone("111" + randNumb).withMobilePhone("222" + randNumb).withWorkPhone("333" + randNumb).withPhoto(photo);
+        app.goTo().gotoHomePage();
+        app.Contact().modifyContact(modcontact);
+        Contacts after = app.db().contacts();
+        assertThat(after.size(), equalTo(before.size()));
+        assertThat(after, equalTo(before.without(contact).withAdded(modcontact)));
+        verifyContactUI();
     }
 
 }
