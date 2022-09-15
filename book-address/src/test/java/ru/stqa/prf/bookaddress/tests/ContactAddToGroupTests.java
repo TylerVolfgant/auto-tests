@@ -1,9 +1,14 @@
 package ru.stqa.prf.bookaddress.tests;
 
+import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 import org.testng.annotations.Test;
+import ru.stqa.prf.bookaddress.generators.ContactDataGenerator;
+import ru.stqa.prf.bookaddress.generators.GroupDataGenerator;
 import ru.stqa.prf.bookaddress.model.ContactData;
 
 import java.io.File;
+import java.io.IOException;
 
 import static ru.stqa.prf.bookaddress.tests.TestBase.app;
 
@@ -21,6 +26,5 @@ public class ContactAddToGroupTests extends TestBase {
         ContactData contact = app.Contact().All().iterator().next();
         app.Contact().addContactToGroup(contact);
     }
-
 
 }
