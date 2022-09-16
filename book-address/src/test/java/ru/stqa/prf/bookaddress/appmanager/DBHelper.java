@@ -10,6 +10,7 @@ import ru.stqa.prf.bookaddress.model.Contacts;
 import ru.stqa.prf.bookaddress.model.GroupData;
 import ru.stqa.prf.bookaddress.model.Groups;
 
+import java.io.File;
 import java.util.List;
 
 public class DBHelper {
@@ -34,7 +35,6 @@ public class DBHelper {
     public Contacts contacts(){
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        //List<ContactData> result = session.createQuery("from ContactData where deprecated LIKE '0000-00-00%'").list();
         List<ContactData> result = session.createQuery("from ContactData where deprecated = '0000-00-00'").list();
         for (ContactData contact : result){
             System.out.println(contact);

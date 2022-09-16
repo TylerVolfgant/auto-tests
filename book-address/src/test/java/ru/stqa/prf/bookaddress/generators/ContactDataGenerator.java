@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ContactDataGenerator {
     @Parameter(names = "-c", description = "Contact count")
@@ -50,12 +52,14 @@ public class ContactDataGenerator {
 
     private List<ContactData> generateContacts(int count) {
         List<ContactData> contacts = new ArrayList<ContactData>();
+        Random rand = new Random();
         for (int i = 0; i < count ; i++) {
-            contacts.add(new ContactData().withFirstname(String.format("firstname %s", i))
+            contacts.add(new ContactData()
+                    .withFirstname(String.format("firstname %s", i))
                     .withLastname(String.format("lastname %s", i))
-                    .withHomePhone(String.format("111 %s", i))
-                    .withWorkPhone(String.format("222 %s", i))
-                    .withMobilePhone(String.format("345 %s", i)));
+                    .withHomePhone(String.format(rand.nextInt(1000)+ "%s", i))
+                    .withWorkPhone(String.format(rand.nextInt(1000)+ "%s", i))
+                    .withMobilePhone(String.format(rand.nextInt(1000) + "%s", i)));
         }
         return contacts;
     }
@@ -73,7 +77,7 @@ public class ContactDataGenerator {
 
     private void saveAsXml(List<ContactData> contacts, File file) {
         XStream xStream = new XStream();
-        xStream.processAnnotations(GroupData.class);
+        xStream.processAnnotations(ContactData.class);
         String xml = xStream.toXML(contacts);
         try(Writer writer = new FileWriter(file)){
             writer.write(xml);

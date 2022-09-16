@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.prf.bookaddress.model.ContactData;
+import ru.stqa.prf.bookaddress.model.Contacts;
 import ru.stqa.prf.bookaddress.model.Groups;
 
 import java.io.File;
@@ -16,7 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class ContactHelper extends HelperBase{
-    private Groups groupCache = null;
+    private Contacts contactCache = null;
     public ContactHelper(WebDriver wd){
         super(wd);
     }
@@ -32,7 +33,8 @@ public class ContactHelper extends HelperBase{
         type(By.name("mobile"), contactData.getMobilePhone());
         attach(By.name("photo"), contactData.getPhoto());
         if(contactData.getGroup() != null) {
-            selectFromDropDown("new_group", contactData.getGroup());
+            //selectFromDropDown("new_group", contactData.getGroup());
+            selectFromDropDown("new_group", addRandomGroup());
             }else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -68,12 +70,14 @@ public class ContactHelper extends HelperBase{
         returnToHomePage();
         selectContactById(contact.getId());
         delete();
-        returnToHomePage();
+        contactCache = null;
+        //returnToHomePage();
     }
     public void createContact(ContactData contact) {
         initContactCreation();
         fillContactForm(contact);
         submitContactCreation();
+        contactCache = null;
         returnToHomePage();
     }
     public void modifyContact( ContactData contact) {
@@ -81,6 +85,7 @@ public class ContactHelper extends HelperBase{
         initContactModification();
         fillContactForm(contact);
         submitContactModification();
+        contactCache = null;
         returnToHomePage();
     }
     public void addContactToGroup( ContactData contact) {
@@ -88,6 +93,7 @@ public class ContactHelper extends HelperBase{
         selectContactById(contact.getId());
         dropRandomGroup();
         submitAddTo();
+        contactCache = null;
         returnToHomePage();
     }
 

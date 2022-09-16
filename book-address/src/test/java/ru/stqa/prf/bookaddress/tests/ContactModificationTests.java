@@ -1,6 +1,7 @@
 package ru.stqa.prf.bookaddress.tests;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.prf.bookaddress.model.ContactData;
 import ru.stqa.prf.bookaddress.model.Contacts;
@@ -15,19 +16,21 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.testng.Assert.assertEquals;
 
 public class ContactModificationTests extends TestBase {
+    File photo = new File("src/test/resources/green-check.png");
+    @BeforeMethod
+    public void Precondition(){
 
+        if (app.db().contacts().size() == 0){
+            app.goTo().gotoHomePage();
+            app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withHomePhone("111").withGroup("test 0")
+                    .withMobilePhone("222").withWorkPhone("333").withPhoto(photo));
+        }
+    }
     @Test(enabled = true)
 
     public void testContactModification(){
         String mod = "_mod";
         int randNumb = ThreadLocalRandom.current().nextInt(0, 10);
-        File photo = new File("src/test/resources/green-check.png");
-
-        if (app.db().contacts().size() == 0){
-            app.goTo().gotoGroupPage();
-            app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withHomePhone("111").withGroup("test 1")
-                    .withMobilePhone("222").withWorkPhone("333").withPhoto(photo));//,true);
-        }
         Contacts before = app.db().contacts();
         app.goTo().gotoHomePage();
         ContactData contact = before.iterator().next();
