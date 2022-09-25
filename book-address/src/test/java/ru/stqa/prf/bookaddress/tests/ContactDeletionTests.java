@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.stqa.prf.bookaddress.model.ContactData;
 import ru.stqa.prf.bookaddress.model.Contacts;
+import ru.stqa.prf.bookaddress.model.GroupData;
 
 import java.io.File;
 
@@ -17,12 +18,14 @@ public class ContactDeletionTests extends TestBase {
         File photo = new File("src/test/resources/green-check.png");
         if (app.db().contacts().size() == 0){
             app.goTo().gotoHomePage();
-            app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withHomePhone("111").withGroup("test 0")
-                    .withMobilePhone("222").withWorkPhone("333").withPhoto(photo));
+            app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withHomePhone("111")
+                            .inGroup(new GroupData().withHeader("").withFooter("").withName("test 0"))
+                   // .withGroup("test 0")
+                    .withMobilePhone("222").withWorkPhone("333").withPhoto(new File("src/test/resources/green-check.png")));
         }
     }
     @Test(enabled = true)
-    public void testContactDeletion(){
+    public void testContactDeletion() throws InterruptedException {
 
         Contacts before = app.db().contacts();
         System.out.println("before ++++++ " + before.size());

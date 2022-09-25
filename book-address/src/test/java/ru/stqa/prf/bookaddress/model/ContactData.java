@@ -7,7 +7,10 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
 @XStreamAlias("contact")
 @Entity
 //@Table(name = "addressbook")
@@ -103,6 +106,15 @@ public class ContactData {
         this.photo = photo.getPath();
         return this;
     }
+
+    public static Set<GroupData> groups = new HashSet<GroupData>();
+    public static Groups getGroups(){
+        return new Groups(groups);
+    }
+    public ContactData inGroup(GroupData group){
+        groups.add(group);
+        return this;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -121,5 +133,13 @@ public class ContactData {
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 '}';
+    }
+    public ContactData ActionWithGroup(GroupData modifyGroup, boolean b){
+        if(b == true){
+            groups.add(modifyGroup);
+        } else {
+            groups.remove(modifyGroup);
+        }
+        return  this;
     }
 }

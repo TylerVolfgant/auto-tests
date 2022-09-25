@@ -1,5 +1,7 @@
 package ru.stqa.prf.bookaddress.tests;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -23,25 +25,26 @@ public class ContactModificationTests extends TestBase {
         if (app.db().contacts().size() == 0){
             app.goTo().gotoHomePage();
             app.Contact().createContact(new ContactData().withFirstname("test_name").withLastname("test_surname").withHomePhone("111").withGroup("test 0")
-                    .withMobilePhone("222").withWorkPhone("333").withPhoto(photo));
+                    .withMobilePhone("222").withWorkPhone("333").withPhoto(new File("src/test/resources/green-check.png")));
         }
     }
     @Test(enabled = true)
 
-    public void testContactModification(){
+    public void testContactModification() throws InterruptedException {
         String mod = "_mod";
         int randNumb = ThreadLocalRandom.current().nextInt(0, 10);
         Contacts before = app.db().contacts();
         app.goTo().gotoHomePage();
-        ContactData contact = before.iterator().next();
-        ContactData modcontact  = new ContactData().withId(contact.getId()).withFirstname("test_name" + mod).withLastname("test_lastname" + mod).withGroup(null)
-                .withHomePhone("111" + randNumb).withMobilePhone("222" + randNumb).withWorkPhone("333" + randNumb).withPhoto(photo);
+        ContactData modifcontact = before.iterator().next();//first elem
+        ContactData contact  = new ContactData().withId(modifcontact.getId()).withFirstname("test_name" + mod).withLastname("test_lastname" + mod).withGroup("test 0")
+                .withHomePhone("111" + randNumb).withMobilePhone("222" + randNumb).withWorkPhone("333" + randNumb).withPhoto(new File("src/test/resources/green-check.png"));
         app.goTo().gotoHomePage();
-        app.Contact().modifyContact(modcontact);
+        app.Contact().modifyContact(contact);
+        app.goTo().gotoHomePage();
         Contacts after = app.db().contacts();
         assertThat(after.size(), equalTo(before.size()));
-        assertThat(after, equalTo(before.without(contact).withAdded(modcontact)));
+        //assertThat(after, equalTo(before.without(modifcontact).withAdded(contact)));
+        MatcherAssert.assertThat(after, CoreMatchers.equalTo(before.without(modifcontact).withAdded(contact)));
         verifyContactUI();
     }
-
 }
